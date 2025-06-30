@@ -1,8 +1,12 @@
+import { Route, Routes } from "react-router";
+
 function App() {
   return (
-    <div className="flex h-screen w-screen items-center justify-center">
-      <p className="text-center text-2xl">Hello, World!</p>
-    </div>
+    <Routes>
+      <Route path="/" element={<div>Home Page</div>} />
+      <Route path="/about" element={<div>About Page</div>} />
+      <Route path="/contact" element={<div>Contact Page</div>} />
+    </Routes>
   );
 }
 
