@@ -1,11 +1,29 @@
 using Scalar.AspNetCore;
+using Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5173")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<FolioService>();
+builder.Services.AddScoped<ProjectService>();
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi(); // https://aka.ms/aspnet/openapi
 
 var app = builder.Build();
+
+app.UseCors("AllowReactApp");
 
 if (app.Environment.IsDevelopment())
 {
@@ -14,9 +32,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
