@@ -1,0 +1,56 @@
+# .NET Core / .NET 5+ build results
+bin/
+obj/
+out/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Visual Studio Code
+.vscode/
+
+# Rider
+.idea/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Logs
+*.log
+
+# NuGet packages
+*.nupkg
+# The packages folder can be ignored because of PackageReference
+**/packages/*
+!**/packages/build/
+!**/packages/repositories.config
+
+# DotCover
+*.dotCover
+
+# Test results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# Publish output
+publish/
+
+# Azure Pipelines
+*.azurepipelines
+
+# Local secrets
+secrets.json
+appsettings.Development.json
+
+# Others
+_ReSharper*/
+*.vs/
