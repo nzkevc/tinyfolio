@@ -1,7 +1,12 @@
+using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<TinyFolioDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("MyDbConnection")
+    ?? throw new InvalidOperationException("Connection string 'MyDbConnection' not found.")));
 
 builder.Services.AddCors(options =>
 {
