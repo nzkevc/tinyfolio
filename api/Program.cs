@@ -33,7 +33,7 @@ app.UseCors("AllowReactApp");
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.MapScalarApiReference();
+    app.MapScalarApiReference(); // http://localhost:5017/scalar/v1
 }
 
 app.UseHttpsRedirection();

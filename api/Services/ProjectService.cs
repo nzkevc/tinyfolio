@@ -25,4 +25,26 @@ public class ProjectService
             .Include(p => p.Owner)
             .FirstOrDefaultAsync(p => p.Id == id);
     }
+
+    public async Task<Project> CreateProjectAsync(Project project)
+    {
+        _context.Projects.Add(project);
+        await _context.SaveChangesAsync();
+        return project;
+    }
+
+    public async Task<bool> UpdateProjectAsync(Project project)
+    {
+        _context.Projects.Update(project);
+        return await _context.SaveChangesAsync() > 0;
+    }
+
+    public async Task<bool> DeleteProjectAsync(int id)
+    {
+        var project = await GetProjectByIdAsync(id);
+        if (project == null) return false;
+
+        _context.Projects.Remove(project);
+        return await _context.SaveChangesAsync() > 0;
+    }
 }
