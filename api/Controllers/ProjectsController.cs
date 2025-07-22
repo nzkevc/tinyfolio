@@ -34,4 +34,40 @@ public class ProjectsController : ControllerBase
         }
         return project;
     }
+
+    // TODO: add field validation
+    [HttpPost(Name = "CreateProject")]
+    public async Task<ActionResult<Project>> CreateProject(Project project)
+    {
+        var createdProject = await _projectService.CreateProjectAsync(project);
+        return CreatedAtAction(nameof(GetProjectById), new { id = createdProject.Id }, createdProject);
+    }
+
+    // TODO: add field validation and permission check
+    [HttpPut("{id}", Name = "UpdateProject")]
+    public async Task<IActionResult> UpdateProject(int id, Project project)
+    {
+        if (id != project.Id)
+        {
+            return BadRequest("Project ID mismatch");
+        }
+        var updated = await _projectService.UpdateProjectAsync(project);
+        if (!updated)
+        {
+            return NotFound();
+        }
+        return NoContent();
+    }
+
+    // TODO: add permission check
+    [HttpDelete("{id}", Name = "DeleteProject")]
+    public async Task<IActionResult> DeleteProject(int id)
+    {
+        var deleted = await _projectService.DeleteProjectAsync(id);
+        if (!deleted)
+        {
+            return NotFound();
+        }
+        return NoContent();
+    }
 }
