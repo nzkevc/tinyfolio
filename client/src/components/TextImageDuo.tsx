@@ -1,9 +1,8 @@
-import placeholder from "@/assets/image/600x400.png";
 import { cn } from "@/lib/utils";
 
 interface TextImageDuoProps {
   children: React.ReactNode;
-  image?: { src: string; alt?: string };
+  image: { src: string; alt?: string };
   imgFirst?: boolean;
 }
 
@@ -25,10 +24,8 @@ export default function TextImageDuo({ children, image, imgFirst = false }: Text
         )}
       >
         <img
-          width={600}
-          height={400}
-          src={image?.src ?? placeholder}
-          alt={image?.alt ?? "Image missing alt :( - please email us about this issue"}
+          src={image.src}
+          alt={image.alt ?? "missing alt text...please contact us about this issue"}
           className="h-auto w-full rounded-2xl"
         />
       </div>
