@@ -1,12 +1,23 @@
 import NestedDiv from "@/components/NestedDiv";
+import { cn } from "@/lib/utils";
 
-export default function CentredLayout({ children }: { children: React.ReactNode }) {
+import TopBar from "./TopBar";
+
+type CentredLayoutProps = {
+  children: React.ReactNode;
+  className?: string;
+};
+
+export default function CentredLayout({ children, className }: CentredLayoutProps) {
   return (
-    <NestedDiv
-      outer="flex w-full items-center justify-center py-20"
-      inner="flex w-[80%] max-w-[1100px] flex-col gap-24"
-    >
-      {children}
-    </NestedDiv>
+    <>
+      <TopBar />
+      <NestedDiv
+        outer="flex w-full items-center justify-center py-20"
+        inner={cn("flex w-[80%] max-w-[1100px] flex-col gap-16", className)}
+      >
+        {children}
+      </NestedDiv>
+    </>
   );
 }
