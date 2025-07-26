@@ -34,7 +34,7 @@ var app = builder.Build();
 app.UseCors("AllowReactApp");
 
 app.MapOpenApi();
-app.MapScalarApiReference(); // http://localhost:5017/scalar/v1
+app.MapScalarApiReference(options => options.Servers = []); // http://localhost:5017/scalar/v1
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
