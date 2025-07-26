@@ -16,6 +16,9 @@ builder.Services.AddCors(options =>
             policy.WithOrigins("http://localhost:5173")
                   .AllowAnyHeader()
                   .AllowAnyMethod();
+            policy.WithOrigins("https://tinyfolio.fly.dev")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
         });
 });
 
@@ -30,11 +33,8 @@ var app = builder.Build();
 
 app.UseCors("AllowReactApp");
 
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-    app.MapScalarApiReference(); // http://localhost:5017/scalar/v1
-}
+app.MapOpenApi();
+app.MapScalarApiReference(); // http://localhost:5017/scalar/v1
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
