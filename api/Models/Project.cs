@@ -8,6 +8,6 @@ public class Project
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     public User Owner { get; set; } = new User();
-    public int OwnerId { get; set; } // TODO: verify if this is needed
+    public Guid OwnerId { get; set; } // TODO: verify if this is needed
     public List<User> Collaborators { get; set; } = new List<User>();
 }
