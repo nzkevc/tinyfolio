@@ -30,7 +30,21 @@ public class FoliosController : ControllerBase
         return folio;
     }
 
-    // TODO: add field validation
+    [HttpGet("owner/{ownerId}", Name = "GetFolioByOwnerId")]
+    public async Task<ActionResult<Folio>> GetFolioByOwnerId(string ownerId)
+    {
+        if (!Guid.TryParse(ownerId, out var ownerGuid))
+        {
+            return BadRequest("Invalid owner ID format.");
+        }
+        var folio = await _folioService.GetFolioByOwnerIdAsync(ownerGuid);
+        if (folio == null)
+        {
+            return NotFound();
+        }
+        return folio;
+    }
+
     [HttpPost(Name = "CreateFolio")]
     public async Task<ActionResult<Folio>> CreateFolio(Folio folio)
     {
@@ -38,7 +52,6 @@ public class FoliosController : ControllerBase
         return CreatedAtAction(nameof(GetFolioById), new { id = createdFolio.Id }, createdFolio);
     }
 
-    // TODO: add field validation
     [HttpPut("{id}", Name = "UpdateFolio")]
     public async Task<IActionResult> UpdateFolio(int id, Folio folio)
     {

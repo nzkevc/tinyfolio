@@ -12,7 +12,7 @@ public class AccessTokenUtil
 
         if (userIdClaim == null || userIdClaim.Value != id.ToString())
         {
-            throw new ForbidException("You do not have permission to update this user.");
+            throw new ForbidException("You do not have permission to update this entity.");
         }
     }
 }

@@ -20,6 +20,14 @@ public class ProjectService
             .ToListAsync();
     }
 
+    public async Task<List<Project>> GetProjectsByOwnerAsync(Guid ownerId)
+    {
+        return await _context.Projects
+            .Where(p => p.OwnerId == ownerId)
+            .Include(p => p.Owner)
+            .ToListAsync();
+    }
+
     public async Task<Project?> GetProjectByIdAsync(int id)
     {
         return await _context.Projects

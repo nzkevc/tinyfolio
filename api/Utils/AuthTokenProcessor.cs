@@ -64,10 +64,11 @@ public class AuthTokenProcessor
         _httpContextAccessor?.HttpContext?.Response.Cookies.Append(cookieName,
             token, new CookieOptions
             {
-                HttpOnly = true,
+                HttpOnly = false,
                 Expires = expiration,
                 IsEssential = true,
                 Secure = true,
+                SameSite = SameSiteMode.None
             });
     }
 }

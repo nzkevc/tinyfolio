@@ -26,6 +26,17 @@ public class ProjectsController : ControllerBase
         return projects;
     }
 
+    [HttpGet("owner/{ownerId}", Name = "GetProjectsByOwner")]
+    public async Task<ActionResult<IEnumerable<Project>>> GetProjectsByOwner(string ownerId)
+    {
+        if (!Guid.TryParse(ownerId, out var ownerGuid))
+        {
+            return BadRequest("Invalid owner ID format.");
+        }
+        var projects = await _projectService.GetProjectsByOwnerAsync(ownerGuid);
+        return Ok(projects);
+    }
+
     [HttpGet("{id}", Name = "GetProjectById")]
     public async Task<ActionResult<Project>> GetProjectById(int id)
     {
@@ -37,25 +48,30 @@ public class ProjectsController : ControllerBase
         return project;
     }
 
-    // TODO: add field validation
     [HttpPost(Name = "CreateProject")]
-    public async Task<ActionResult<Project>> CreateProject(Project project)
+    public async Task<ActionResult<Project>> CreateProject(Project project, [FromQuery] string ownerId)
     {
+        if (!Guid.TryParse(ownerId, out var ownerGuid))
+        {
+            return BadRequest("Invalid owner ID format.");
+        }
+        project.OwnerId = ownerGuid;
         var createdProject = await _projectService.CreateProjectAsync(project);
         return CreatedAtAction(nameof(GetProjectById), new { id = createdProject.Id }, createdProject);
     }
 
-    // TODO: add field validation
     [HttpPut("{id}", Name = "UpdateProject")]
     [Authorize]
     public async Task<IActionResult> UpdateProject(int id, Project project)
     {
-        // TODO: check if the user is the owner of the project
-
-        if (id != project.Id)
+        var accessToken = Request.Cookies["ACCESS_TOKEN"];
+        if (string.IsNullOrEmpty(accessToken))
         {
-            return BadRequest("Project ID mismatch");
+            return Unauthorized();
         }
+
+        AccessTokenUtil.CheckAccessTokenId(project.OwnerId, accessToken);
+
         var updated = await _projectService.UpdateProjectAsync(project);
         if (!updated)
         {

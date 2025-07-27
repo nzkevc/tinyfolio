@@ -36,6 +36,14 @@ public class FolioService
         return folio;
     }
 
+    public async Task<Folio?> GetFolioByOwnerIdAsync(Guid ownerId)
+    {
+        return await _context.Folios
+            .Include(f => f.Projects)
+            .Include(f => f.Owner)
+            .FirstOrDefaultAsync(f => f.OwnerId == ownerId);
+    }
+
     public async Task<bool> UpdateFolioAsync(Folio folio)
     {
         _context.Folios.Update(folio);
