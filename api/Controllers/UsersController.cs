@@ -1,4 +1,5 @@
 using api.Models;
+using api.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
@@ -36,22 +37,17 @@ public class UsersController : ControllerBase
         return user;
     }
 
-    // TODO: add field validation
-    [HttpPost(Name = "CreateUser")]
-    public async Task<ActionResult<User>> CreateUser(User user)
+    [HttpPut("{id}", Name = "UpdateName")]
+    [Authorize]
+    public async Task<IActionResult> UpdateUserName(Guid id, String name)
     {
-        var createdUser = await _userService.CreateUserAsync(user);
-        return CreatedAtAction(nameof(GetUserById), new { id = createdUser.Id }, createdUser);
-    }
-
-    // TODO: add field validation
-    [HttpPut("{id}", Name = "UpdateUser")]
-    public async Task<IActionResult> UpdateUser(Guid id, User user)
-    {
-        if (id != user.Id)
+        var user = await _userService.GetUserByIdAsync(id);
+        if (user == null)
         {
-            return BadRequest("User ID mismatch");
+            return NotFound();
         }
+
+        user.Name = name;
         var updated = await _userService.UpdateUserAsync(user);
         if (!updated)
         {
@@ -64,7 +60,13 @@ public class UsersController : ControllerBase
     [Authorize]
     public async Task<IActionResult> DeleteUser(Guid id)
     {
-        // TODO: check if the user deleting is the same as the user being deleted
+        var accessToken = Request.Cookies["ACCESS_TOKEN"];
+        if (string.IsNullOrEmpty(accessToken))
+        {
+            return Unauthorized();
+        }
+
+        AccessTokenUtil.CheckAccessTokenId(id, accessToken);
 
         var deleted = await _userService.DeleteUserAsync(id);
         if (!deleted)

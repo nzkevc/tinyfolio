@@ -45,8 +45,6 @@ public class UserService
 
     public async Task<bool> DeleteUserAsync(Guid id)
     {
-        // TODO: maybe add check if 
-
         var user = await GetUserByIdAsync(id);
         if (user == null) return false;
 

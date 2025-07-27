@@ -1,4 +1,5 @@
 using api.Models;
+using api.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 
@@ -52,10 +53,23 @@ public class FoliosController : ControllerBase
         return NoContent();
     }
 
-    // TODO: add permission check for folio deletion
     [HttpDelete("{id}", Name = "DeleteFolio")]
     public async Task<IActionResult> DeleteFolio(int id)
     {
+        var accessToken = Request.Cookies["ACCESS_TOKEN"];
+        if (string.IsNullOrEmpty(accessToken))
+        {
+            return Unauthorized();
+        }
+
+        var folio = await _folioService.GetFolioByIdAsync(id);
+        if (folio == null)
+        {
+            return NotFound();
+        }
+
+        AccessTokenUtil.CheckAccessTokenId(folio.OwnerId, accessToken);
+
         var deleted = await _folioService.DeleteFolioAsync(id);
         if (!deleted)
         {
