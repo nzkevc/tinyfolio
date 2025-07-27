@@ -17,9 +17,11 @@ public class UserService
         return await _context.Users.ToListAsync();
     }
 
-    public async Task<User?> GetUserByIdAsync(int id)
+    public async Task<User?> GetUserByRefreshTokenAsync(string refreshToken)
     {
-        return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+        var user = await _context.Users.FirstOrDefaultAsync(x => x.RefreshToken == refreshToken);
+
+        return user;
     }
 
     public async Task<User> CreateUserAsync(User user)
@@ -35,9 +37,9 @@ public class UserService
         return await _context.SaveChangesAsync() > 0;
     }
 
-    public async Task<bool> DeleteUserAsync(int id)
+    public async Task<bool> DeleteUserAsync(string refreshToken)
     {
-        var user = await GetUserByIdAsync(id);
+        var user = await GetUserByRefreshTokenAsync(refreshToken);
         if (user == null) return false;
 
         _context.Users.Remove(user);
