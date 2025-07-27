@@ -29,12 +29,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowReactApp",
         policy =>
         {
-            policy.WithOrigins("http://localhost:5173")
+            policy.WithOrigins("http://localhost:5173", "https://tinyfolio.fly.dev")
                   .AllowAnyHeader()
-                  .AllowAnyMethod();
-            policy.WithOrigins("https://tinyfolio.fly.dev")
-                  .AllowAnyHeader()
-                  .AllowAnyMethod();
+                  .AllowAnyMethod()
+                  .AllowCredentials();
         });
 });
 
