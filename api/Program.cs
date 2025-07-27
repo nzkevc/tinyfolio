@@ -1,5 +1,7 @@
 using System.Text;
+using api.Data;
 using api.Models;
+using api.Services;
 using api.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -36,6 +38,8 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Services.AddScoped<AuthTokenProcessor>();
+builder.Services.AddScoped<AccountService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<FolioService>();
 builder.Services.AddScoped<ProjectService>();
@@ -83,7 +87,7 @@ var app = builder.Build();
 app.UseCors("AllowReactApp");
 
 app.MapOpenApi();
-app.MapScalarApiReference(options => options.Servers = []); // http://localhost:5017/scalar/v1
+app.MapScalarApiReference(); // http://localhost:5017/scalar/v1
 
 app.UseExceptionHandler(_ => { });
 app.UseHttpsRedirection();

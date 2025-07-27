@@ -1,4 +1,5 @@
 using api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 
@@ -25,7 +26,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet("{id}", Name = "GetUserById")]
-    public async Task<ActionResult<User>> GetUserById(int id)
+    public async Task<ActionResult<User>> GetUserById(Guid id)
     {
         var user = await _userService.GetUserByIdAsync(id);
         if (user == null)
@@ -45,7 +46,7 @@ public class UsersController : ControllerBase
 
     // TODO: add field validation
     [HttpPut("{id}", Name = "UpdateUser")]
-    public async Task<IActionResult> UpdateUser(int id, User user)
+    public async Task<IActionResult> UpdateUser(Guid id, User user)
     {
         if (id != user.Id)
         {
@@ -59,10 +60,12 @@ public class UsersController : ControllerBase
         return NoContent();
     }
 
-    // TODO: add permission check for deletion
     [HttpDelete("{id}", Name = "DeleteUser")]
-    public async Task<IActionResult> DeleteUser(int id)
+    [Authorize]
+    public async Task<IActionResult> DeleteUser(Guid id)
     {
+        // TODO: check if the user deleting is the same as the user being deleted
+
         var deleted = await _userService.DeleteUserAsync(id);
         if (!deleted)
         {

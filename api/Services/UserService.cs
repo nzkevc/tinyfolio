@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using api.Models;
+using api.Data;
 
 namespace Services;
 
@@ -15,6 +16,11 @@ public class UserService
     public async Task<List<User>> GetUsersAsync()
     {
         return await _context.Users.ToListAsync();
+    }
+
+    public async Task<User?> GetUserByIdAsync(Guid id)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
     }
 
     public async Task<User?> GetUserByRefreshTokenAsync(string refreshToken)
@@ -37,9 +43,11 @@ public class UserService
         return await _context.SaveChangesAsync() > 0;
     }
 
-    public async Task<bool> DeleteUserAsync(string refreshToken)
+    public async Task<bool> DeleteUserAsync(Guid id)
     {
-        var user = await GetUserByRefreshTokenAsync(refreshToken);
+        // TODO: maybe add check if 
+
+        var user = await GetUserByIdAsync(id);
         if (user == null) return false;
 
         _context.Users.Remove(user);

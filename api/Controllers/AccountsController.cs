@@ -1,6 +1,5 @@
 using api.Services;
 using api.Utils.Requests;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers;
