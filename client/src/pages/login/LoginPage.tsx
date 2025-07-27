@@ -1,6 +1,8 @@
 import CentredLayout from "@/components/CentredLayout";
 import PageHeader from "@/components/PageHeader";
 import PageSubHeader from "@/components/PageSubHeader";
+import { Button } from "@/components/ui/button";
+import { refreshToken } from "@/services/account";
 
 export default function LoginPage() {
   return (
@@ -22,6 +24,10 @@ export default function LoginPage() {
           Register
         </a>
       </div>
+
+      <Button onClick={() => refreshToken()} className="mt-4">
+        Refresh token test
+      </Button>
     </CentredLayout>
   );
 }
