@@ -23,7 +23,7 @@ export default function DashboardPage() {
       <div className="flex flex-col items-center gap-4 lg:items-start">
         <PageSubHeader title="Manage your tinyfolio" />
         <p>Insert link to tinyfolio here?</p>
-        <Button className="font-normal">
+        <Button className="font-semibold">
           Go to your tinyfolio <Arrow />
         </Button>
       </div>
