@@ -4,9 +4,9 @@ import type { Folio } from "@/models/Folio";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
-export async function getFolioById(id: number): Promise<Folio> {
+export async function getFolioByOwnerId(id: string): Promise<Folio> {
   try {
-    const response = await axios.get(`${API_URL}/Folios/${id}`);
+    const response = await axios.get(`${API_URL}/Folios/owner/${id}`);
     return response.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {

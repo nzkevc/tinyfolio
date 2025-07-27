@@ -1,5 +1,7 @@
 import axios from "axios";
 
+import type { Project } from "@/models/Project";
+
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 export async function getAllProjects() {
@@ -11,6 +13,23 @@ export async function getAllProjects() {
       console.error("Failed to fetch projects:", error.response.data);
     } else {
       console.error("An error occurred while fetching projects:", (error as Error).message);
+    }
+    throw error;
+  }
+}
+
+export async function getProjectsByOwner(ownerId: string): Promise<Project[]> {
+  try {
+    const response = await axios.get(`${API_URL}/Projects/owner/${ownerId}`);
+    return response.data;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      console.error("Failed to fetch projects by owner:", error.response.data);
+    } else {
+      console.error(
+        "An error occurred while fetching projects by owner:",
+        (error as Error).message,
+      );
     }
     throw error;
   }
@@ -30,13 +49,15 @@ export async function getProjectById(id: number) {
   }
 }
 
-export async function createProject(project: {
-  name: string;
-  description: string;
-  ownerId: string;
-}) {
+export async function createProject(
+  project: {
+    name: string;
+    description: string;
+  },
+  ownerId: string,
+) {
   try {
-    const response = await axios.post(`${API_URL}/Projects`, project);
+    const response = await axios.post(`${API_URL}/Projects?ownerId=${ownerId}`, project);
     return response.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
