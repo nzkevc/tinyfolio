@@ -50,4 +50,19 @@ public class FolioService
         _context.Folios.Remove(folio);
         return await _context.SaveChangesAsync() > 0;
     }
+
+    public async Task<bool> AddProjectToFolioAsync(Folio folio, int projectId)
+    {
+        var project = await _context.Projects.FindAsync(projectId);
+        if (project == null) return false;
+        if (folio.Projects.Any(p => p.Id == projectId))
+        {
+            return false;
+        }
+
+        folio.Projects.Add(project);
+        await _context.SaveChangesAsync();
+
+        return true;
+    }
 }

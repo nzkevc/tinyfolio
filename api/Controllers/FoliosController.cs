@@ -78,4 +78,22 @@ public class FoliosController : ControllerBase
         }
         return NoContent();
     }
+
+    [HttpPost("{folioId}/projects", Name = "AddProjectsToFolio")]
+    public async Task<IActionResult> AddProjectToFolio(int folioId, [FromBody] int projectId)
+    {
+        var folio = await _folioService.GetFolioByIdAsync(folioId);
+        if (folio == null)
+        {
+            return NotFound();
+        }
+
+        var success = await _folioService.AddProjectToFolioAsync(folio, projectId);
+        if (!success)
+        {
+            return BadRequest("Failed to add project to folio.");
+        }
+
+        return NoContent();
+    }
 }
