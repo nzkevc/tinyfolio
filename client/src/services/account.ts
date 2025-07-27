@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
@@ -10,11 +9,11 @@ export async function refreshToken() {
     });
 
     console.log("Token refreshed successfully:", response.data);
-  } catch (error: any) {
-    if (error.response) {
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
       console.error("Failed to refresh token:", error.response.data);
     } else {
-      console.error("An error occurred while refreshing the token:", error.message);
+      console.error("An error occurred while refreshing the token:", (error as Error).message);
     }
   }
 }
@@ -24,11 +23,11 @@ export async function register(registerRequest: { email: string; password: strin
     const response = await axios.post(`${API_URL}/Accounts/register`, registerRequest);
     console.log("User registered successfully:", response.data);
     return response.data;
-  } catch (error: any) {
-    if (error.response) {
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
       console.error("Failed to register user:", error.response.data);
     } else {
-      console.error("An error occurred while registering the user:", error.message);
+      console.error("An error occurred while registering the user:", (error as Error).message);
     }
     throw error;
   }
@@ -41,11 +40,11 @@ export async function login(loginRequest: { email: string; password: string }) {
     });
     console.log("User logged in successfully:", response.data);
     return response.data;
-  } catch (error: any) {
-    if (error.response) {
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
       console.error("Failed to log in:", error.response.data);
     } else {
-      console.error("An error occurred while logging in:", error.message);
+      console.error("An error occurred while logging in:", (error as Error).message);
     }
     throw error;
   }
