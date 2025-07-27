@@ -9,5 +9,5 @@ public class Folio
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     public List<Project> Projects { get; set; } = new List<Project>();
     public User Owner { get; set; } = new User();
-    public int OwnerId { get; set; } // TODO: verify if this is needed/correct
+    public Guid OwnerId { get; set; } // TODO: verify if this is needed/correct
 }

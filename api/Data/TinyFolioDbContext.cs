@@ -1,7 +1,11 @@
 using api.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-public class TinyFolioDbContext : DbContext
+namespace api.Data;
+
+public class TinyFolioDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 {
     public TinyFolioDbContext(DbContextOptions<TinyFolioDbContext> options) : base(options) { }
     public DbSet<User> Users { get; set; }
@@ -10,6 +14,8 @@ public class TinyFolioDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<Project>()
             .HasOne(p => p.Owner)
             .WithMany()

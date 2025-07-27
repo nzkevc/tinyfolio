@@ -1,4 +1,5 @@
 using api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 
@@ -43,10 +44,13 @@ public class ProjectsController : ControllerBase
         return CreatedAtAction(nameof(GetProjectById), new { id = createdProject.Id }, createdProject);
     }
 
-    // TODO: add field validation and permission check
+    // TODO: add field validation
     [HttpPut("{id}", Name = "UpdateProject")]
+    [Authorize]
     public async Task<IActionResult> UpdateProject(int id, Project project)
     {
+        // TODO: check if the user is the owner of the project
+
         if (id != project.Id)
         {
             return BadRequest("Project ID mismatch");
@@ -59,10 +63,12 @@ public class ProjectsController : ControllerBase
         return NoContent();
     }
 
-    // TODO: add permission check
     [HttpDelete("{id}", Name = "DeleteProject")]
+    [Authorize]
     public async Task<IActionResult> DeleteProject(int id)
     {
+        // TODO: check if the user is the owner of the project
+
         var deleted = await _projectService.DeleteProjectAsync(id);
         if (!deleted)
         {
