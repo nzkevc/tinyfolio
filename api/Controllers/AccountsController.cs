@@ -43,4 +43,31 @@ public class AccountsController : ControllerBase
         await _accountService.RefreshTokenAsync(refreshToken);
         return Ok();
     }
+
+    [HttpGet("validate")]
+    public IActionResult ValidateAccessToken()
+    {
+        var accessToken = Request.Cookies["ACCESS_TOKEN"];
+        if (string.IsNullOrEmpty(accessToken))
+        {
+            return Unauthorized("Access token is missing.");
+        }
+
+        try
+        {
+            var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(accessToken);
+
+            if (jwtToken.ValidTo < DateTime.UtcNow)
+            {
+                return Unauthorized("Access token has expired.");
+            }
+        }
+        catch (Exception)
+        {
+            return Unauthorized("Invalid access token.");
+        }
+
+        return Ok("Access token is valid.");
+    }
 }
