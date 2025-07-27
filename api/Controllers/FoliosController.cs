@@ -21,6 +21,7 @@ public class FoliosController : ControllerBase
     [HttpGet("{id}", Name = "GetFolioById")]
     public async Task<ActionResult<Folio>> GetFolioById(int id)
     {
+        // TODO: fix attaching owner when getting a folio
         var folio = await _folioService.GetFolioByIdAsync(id);
         if (folio == null)
         {
