@@ -1,4 +1,5 @@
 using api.Models;
+using api.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
@@ -67,7 +68,19 @@ public class ProjectsController : ControllerBase
     [Authorize]
     public async Task<IActionResult> DeleteProject(int id)
     {
-        // TODO: check if the user is the owner of the project
+        var accessToken = Request.Cookies["ACCESS_TOKEN"];
+        if (string.IsNullOrEmpty(accessToken))
+        {
+            return Unauthorized();
+        }
+
+        var project = await _projectService.GetProjectByIdAsync(id);
+        if (project == null)
+        {
+            return NotFound();
+        }
+
+        AccessTokenUtil.CheckAccessTokenId(project.OwnerId, accessToken);
 
         var deleted = await _projectService.DeleteProjectAsync(id);
         if (!deleted)

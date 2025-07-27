@@ -24,5 +24,10 @@ public class TinyFolioDbContext : IdentityDbContext<User, IdentityRole<Guid>, Gu
         modelBuilder.Entity<Project>()
             .HasMany(p => p.Collaborators)
             .WithMany();
+
+        modelBuilder.Entity<Folio>()
+            .HasOne(f => f.Owner)
+            .WithOne()
+            .HasForeignKey<Folio>(f => f.OwnerId);
     }
 }

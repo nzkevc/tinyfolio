@@ -20,15 +20,15 @@ export default function DashboardPage() {
   return (
     <CentredLayout>
       <PageHeader title="Dashboard" />
-      <div>
+      <div className="flex flex-col items-center gap-4 lg:items-start">
         <PageSubHeader title="Manage your tinyfolio" />
         <p>Insert link to tinyfolio here?</p>
-        <Button className="font-normal">
+        <Button className="font-semibold">
           Go to your tinyfolio <Arrow />
         </Button>
       </div>
 
-      <div>
+      <div className="flex flex-col items-center gap-4 lg:items-start">
         <PageSubHeader title="Your Projects" />
         <p>Insert link to create a new project here?</p>
       </div>
