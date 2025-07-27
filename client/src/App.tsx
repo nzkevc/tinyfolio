@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router";
 
 import {
+  CreateProjectPage,
   DashboardPage,
   LandingPage,
   LoginPage,
@@ -18,6 +19,7 @@ function App() {
       <Route path="/dashboard" element={<DashboardPage />} />
       <Route path="/:id" element={<TinyFolioPage />} />
       <Route path="/projects/:id" element={<ProjectPage />} />
+      <Route path="/create-project" element={<CreateProjectPage />} />
     </Routes>
   );
 }

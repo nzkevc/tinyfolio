@@ -2,6 +2,10 @@
 
 An app for showcasing both individual and collaborative projects with people.
 
+> **Important:**  
+> This application uses cookies for authentication, and may be blocked by your browser settings.
+> To ensure this application works, change your browser settings to allow third-party cookies.
+
 ## Setup instructions
 
 To run this application locally, you will need the correct files below:

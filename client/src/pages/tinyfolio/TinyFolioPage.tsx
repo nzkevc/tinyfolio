@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 
 import CentredLayout from "@/components/CentredLayout";
 import type { Folio } from "@/models/Folio";
-import { getFolioById } from "@/services/folio";
+import { getFolioByOwnerId } from "@/services/folio";
 
 export default function TinyFolioPage() {
   const [folio, setFolio] = useState<Folio | null>(null);
@@ -14,7 +14,7 @@ export default function TinyFolioPage() {
   useEffect(() => {
     async function fetchFolio() {
       try {
-        const fetchedFolio = await getFolioById(Number(id));
+        const fetchedFolio = await getFolioByOwnerId(id ?? "");
         setFolio(fetchedFolio);
       } catch {
         setError("Failed to load folio.");

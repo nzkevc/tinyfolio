@@ -27,3 +27,13 @@ export function isAccessTokenExpired(token: string): boolean {
     return true;
   }
 }
+
+export function getJwtSubject(token: string): string | null {
+  try {
+    const decoded: { sub?: string } = jwtDecode(token);
+    return decoded.sub ?? null;
+  } catch (error) {
+    console.error("Failed to decode token:", error);
+    return null;
+  }
+}
